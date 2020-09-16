@@ -1,16 +1,38 @@
 import React from 'react';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
+import ProTip from "./Protip"
 
-import './App.css';
+import {
+  Layout
+} from "./containers";
 
-import Button from "@material-ui/core/Button"
-function App() {
+function Copyright() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Button variant="contained" onClick={() => alert("Hello World!")}>Hello World</Button>
-      </header>
-    </div>
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <Container maxWidth="sm">
+      <Box my={4}>
+        <Layout />
+        <Typography variant="h4" component="h1" gutterBottom>
+          Create React App v4-beta example
+        </Typography>
+        <ProTip />
+        <Copyright />
+      </Box>
+    </Container>
+  );
+}
