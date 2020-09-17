@@ -1,1 +1,2 @@
-export { default as AppMenu } from "./appMenu";
+export { default as AppMenu } from "./AppMenu";
+export { default as AppSelect } from "./AppSelect";

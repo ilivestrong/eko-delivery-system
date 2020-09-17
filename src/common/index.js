@@ -1,1 +1,1 @@
-export { getTowns } from "./towns";
+export { default as AppRouter } from "./AppRouter";

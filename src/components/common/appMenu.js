@@ -15,12 +15,10 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-
 import AddIcon from '@material-ui/icons/Add';
 import CallSplitIcon from '@material-ui/icons/CallSplit';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import { NavLink } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -85,9 +83,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   listitem: {
-    color: "#34ac9a", 
+    color: "#34ac9a",
     fontWeight: "bold",
-  }
+  },
 }));
 
 export default function AppMenu(props) {
@@ -151,29 +149,36 @@ export default function AppMenu(props) {
         </div>
         <Divider />
         <List>
-          <ListItem button key="1">
-            <ListItemIcon><AddIcon /></ListItemIcon>
-            <ListItemText primary="Create Route" className={classes.listitem}/>
-          </ListItem>
+          <NavLink to="/create">
+            <ListItem button key="1">
+              <ListItemIcon><AddIcon /></ListItemIcon>
+              <ListItemText primary="Create Route" className={classes.listitem} />
+            </ListItem>
+          </NavLink>
+
         </List>
         <Divider />
         <List>
-          <ListItem button key="2">
-            <ListItemIcon><AttachMoneyIcon /></ListItemIcon>
-            <ListItemText primary="Delivery cost" className={classes.listitem}/>
-          </ListItem>
+          <NavLink to="/cost">
+            <ListItem button key="2">
+              <ListItemIcon><AttachMoneyIcon /></ListItemIcon>
+              <ListItemText primary="Delivery cost" className={classes.listitem} />
+            </ListItem>
+          </NavLink>
         </List>
         <Divider />
         <List>
-          <ListItem button key="3">
-            <ListItemIcon><CallSplitIcon /></ListItemIcon>
-            <ListItemText primary="Available Routes" className={classes.listitem} />
-          </ListItem>
+          <NavLink to="/availability" activeClassName = {classes.selectedLink}>
+            <ListItem button key="3">
+              <ListItemIcon><CallSplitIcon /></ListItemIcon>
+              <ListItemText primary="Available Routes" className={classes.listitem} />
+            </ListItem>
+          </NavLink>
         </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        
+
       </main>
     </div>
   );

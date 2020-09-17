@@ -1,13 +1,14 @@
 import React from "react";
-
-import {
-  AppMenu
-} from "../components";
-
+import { BrowserRouter as Router } from 'react-router-dom';
+import { AppMenu } from "../components";
+import { AppRouter } from "../common"
 
 const Layout = (props) => {
   return (
-    <AppMenu title = "EKO Delivery System" />
+    <Router>
+      <AppMenu title="EKO Delivery System" />
+      <AppRouter />
+    </Router>
   )
 }
 
