@@ -1,14 +1,9 @@
 import React from "react";
 import { Typography, Button, TextField } from "@material-ui/core"
 import { makeStyles } from '@material-ui/core/styles';
-
-import {
-  connect,
-} from "react-redux";
-
+import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
-import { AppSelect } from "./common";
+import { AppSelect, RouteList } from "./common";
 import { getTowns } from "../data/towns";
 import { ACTION_CREATORS } from "../state/actions"
 
@@ -22,7 +17,7 @@ const CreateRoute = (props) => {
   const classes = useStyles();
   const townsList = getTowns();
 
-  const { createRoute } = props;
+  const { createRoute, routes } = props;
   const [fromTown, setFromTown] = React.useState("");
   const [toTown, setToTown] = React.useState("");
   const [cost, setCost] = React.useState("");
@@ -91,12 +86,22 @@ const CreateRoute = (props) => {
         >Create</Button>
       </div>
 
+      <div>
+        <RouteList data={routes} />
+      </div>
+
     </React.Fragment>
   )
+}
+
+const mapStateToProps = (state) => {
+  return {
+    routes: state
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(ACTION_CREATORS, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(CreateRoute);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateRoute);

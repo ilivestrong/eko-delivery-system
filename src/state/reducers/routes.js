@@ -6,9 +6,7 @@ const initialState = [];
 export const routesReducer = (state = initialState, action) => {
   switch (action.type) {
     case TYPES.CREATE_ROUTE:
-      const newState = state.concat(action.payload);
-      console.log(newState);
-      return newState;
+      return state.concat(action.payload);
     case TYPES.GET_ROUTES:
       return state;
     default:
