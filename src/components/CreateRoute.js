@@ -39,6 +39,8 @@ const CreateRoute = (props) => {
       toTown,
       cost,
     );
+
+    setCost("");
   }
 
   return (
@@ -83,6 +85,7 @@ const CreateRoute = (props) => {
         <Button
           variant="contained"
           onClick={handleRouteCreation}
+          disabled={!fromTown || !toTown || !cost}
         >Create</Button>
       </div>
 
