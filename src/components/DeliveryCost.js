@@ -1,14 +1,14 @@
 import React from "react";
 import {
-  Button,
   Typography,
   Snackbar,
-  IconButton,
 } from "@material-ui/core";
 import {
   RouteSelectionChips,
   DeliveryRouteView,
   AppMessage,
+  AppButton,
+  AppIconButton,
 } from "./common";
 import { TownContext } from "../common/contexts";
 import { connect } from "react-redux";
@@ -83,26 +83,33 @@ const DeliveryCost = () => {
 
       {
         showCalculateButton &&
-        <Button
+        <AppButton
+          title="Calculate deliveyry cost"
           variant="contained"
           onClick={handleDeliverCostCalculation}
           disabled={!enableCalculateButton}
-        >Calculate</Button>
+        >
+          Calculate
+        </AppButton>
       }
       {
         areAvailableActionButtons &&
         <React.Fragment>
-          <IconButton style={{ marginLeft: 300 }}
+          <AppIconButton
+            title="Undo add town"
+            style={{ marginLeft: 300 }}
             onClick={hanndleUndoLastOperation}
           >
             <UndoIcon />
-          </IconButton>
+          </AppIconButton>
           {"   "}
-          <IconButton style={{ marginLeft: 10 }}
+          <AppIconButton
+            title="Reset operation"
+            style={{ marginLeft: 10 }}
             onClick={handleResetOperation}
           >
             <ClearIcon />
-          </IconButton>
+          </AppIconButton>
         </React.Fragment>
       }
 
