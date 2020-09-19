@@ -30,6 +30,7 @@ const RouteSelectionChips = (props) => {
         &&
         townList.map((town) =>
           <Chip
+            key={town.value}
             icon={<LocationOnIcon />}
             onClick={() => handleClick(town)}
             variant="outlined"
