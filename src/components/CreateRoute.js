@@ -99,7 +99,7 @@ const CreateRoute = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    routes: state
+    routes: state.routes
   }
 }
 
