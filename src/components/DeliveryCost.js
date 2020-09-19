@@ -1,24 +1,29 @@
 import React from "react";
 import {
+  Button,
   Typography,
   Snackbar,
+  IconButton,
 } from "@material-ui/core";
-
 import {
   RouteSelectionChips,
   DeliveryRouteView,
   AppMessage,
 } from "./common";
-
 import { TownContext } from "../common/contexts";
+import { connect } from "react-redux";
+import UndoIcon from '@material-ui/icons/Undo';
+import ClearIcon from '@material-ui/icons/Clear';
 
-const DeliveryCost = (props) => {
-
+const DeliveryCost = () => {
   const townList = React.useContext(TownContext);
   const [selectedTownList, setSelectedTownList] = React.useState([]);
   const [isError, setIsError] = React.useState(false);
   const [error, setError] = React.useState("");
   const [info, setInfo] = React.useState("");
+  const [showCalculateButton, setShowCalculateButton] = React.useState(false);
+  const [enableCalculateButton, setEnableCalculateButton] = React.useState(false);
+  const [areAvailableActionButtons, setAreAvailableActionButtons] = React.useState(false);
 
   const handleTownSelection = ({ text }) => {
     if (selectedTownList.indexOf(text) > -1) {
@@ -29,11 +34,40 @@ const DeliveryCost = (props) => {
     setSelectedTownList([...selectedTownList, text]);
   }
 
-  React.useState(() => {
+  const handleDeliverCostCalculation = () => {
+
+  }
+
+  const handleResetOperation = (event) => {
+    setSelectedTownList([]);
+  }
+  const hanndleUndoLastOperation = () => setSelectedTownList(selectedTownList.slice(0, selectedTownList.length - 1));
+
+
+  React.useEffect(() => {
+    if (selectedTownList.length === 1) {
+      setShowCalculateButton(true);
+      setAreAvailableActionButtons(true);
+    }
+
+    if (selectedTownList.length > 1) {
+      setEnableCalculateButton(true)
+    } else {
+      setEnableCalculateButton(false);
+    }
+
     if (selectedTownList.length < 2) {
       setInfo("Please select atleast 2 towns to build a delivery route")
     }
-  })
+
+    if (selectedTownList.length === 0) {
+      setShowCalculateButton(false);
+      setAreAvailableActionButtons(false);
+    }
+
+  },
+    // eslint-disable-next-line
+    [selectedTownList]);
 
   return (
     <React.Fragment>
@@ -47,6 +81,31 @@ const DeliveryCost = (props) => {
         * Town chips should be clicked in the order you want to build the route.
       </Typography>
 
+      {
+        showCalculateButton &&
+        <Button
+          variant="contained"
+          onClick={handleDeliverCostCalculation}
+          disabled={!enableCalculateButton}
+        >Calculate</Button>
+      }
+      {
+        areAvailableActionButtons &&
+        <React.Fragment>
+          <IconButton style={{ marginLeft: 300 }}
+            onClick={hanndleUndoLastOperation}
+          >
+            <UndoIcon />
+          </IconButton>
+          {"   "}
+          <IconButton style={{ marginLeft: 10 }}
+            onClick={handleResetOperation}
+          >
+            <ClearIcon />
+          </IconButton>
+        </React.Fragment>
+      }
+
       <RouteSelectionChips
         townList={townList}
         onTownSelection={(town) => handleTownSelection(town)}
@@ -54,19 +113,23 @@ const DeliveryCost = (props) => {
 
       {
         selectedTownList.length > 0 ?
-          <DeliveryRouteView /> :
+          <DeliveryRouteView route={selectedTownList} /> :
           <div style={{ marginTop: 40 }}>
             <AppMessage severity="info">{info}</AppMessage>
           </div>
 
       }
-
       <Snackbar open={isError} autoHideDuration={4000} onClose={() => setIsError(false)}>
-        <AppMessage style={{fontSize:25}} severity="error">{error}</AppMessage>
+        <AppMessage style={{ fontSize: 25 }} severity="error">{error}</AppMessage>
       </Snackbar>
-
     </React.Fragment>
   )
 }
 
-export default DeliveryCost;
+const mapStateToProps = (state) => {
+  return {
+    routes: state.routes,
+  }
+}
+
+export default connect(mapStateToProps)(DeliveryCost);
