@@ -8,9 +8,11 @@ const AppButton = (props) => {
   const { title, children, ...rest } = props;
   return (
     <Tooltip title={title}>
-      <Button {...rest}>
-        {children}
-      </Button>
+      <React.Fragment>
+        <Button {...rest}>
+          {children}
+        </Button>
+      </React.Fragment>
     </Tooltip>
   )
 }

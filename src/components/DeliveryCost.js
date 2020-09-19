@@ -41,8 +41,8 @@ const DeliveryCost = () => {
   const handleResetOperation = (event) => {
     setSelectedTownList([]);
   }
-  const hanndleUndoLastOperation = () => setSelectedTownList(selectedTownList.slice(0, selectedTownList.length - 1));
-
+  const hanndleUndoLastOperation = () =>
+    setSelectedTownList(selectedTownList.slice(0, selectedTownList.length - 1));
 
   React.useEffect(() => {
     if (selectedTownList.length === 1) {
@@ -80,7 +80,6 @@ const DeliveryCost = () => {
         * Click on Town name chips to build a route, you want to find delivery cost for. <br />
         * Town chips should be clicked in the order you want to build the route.
       </Typography>
-
       {
         showCalculateButton &&
         <AppButton

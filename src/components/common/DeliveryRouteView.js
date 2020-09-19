@@ -22,9 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DeliveryRouteView(props) {
   const classes = useStyles();
-
   const { route } = props;
-  console.log(route)
 
   return (
     <Timeline align="alternate">
@@ -35,7 +33,7 @@ export default function DeliveryRouteView(props) {
             const isDestination = index === route.length - 1;
             return <TimelineItem key={index}>
               <TimelineOppositeContent>
-                <Typography variant="body2" color="textSecondary" style ={{fontWeight: "bold"}}>
+                <Typography variant="body2" color="textSecondary" style={{ fontWeight: "bold" }}>
                   {index === 0 && "Start"}
                   {(isDestination && route.length > 1) && "Destination"}
                 </Typography>
@@ -52,7 +50,7 @@ export default function DeliveryRouteView(props) {
               <TimelineContent>
                 <Paper elevation={3} className={classes.paper}>
                   <Typography variant="h6" component="h1">
-                    Town: {town}
+                    Town: <b>{town}</b>
                   </Typography>
                 </Paper>
               </TimelineContent>
