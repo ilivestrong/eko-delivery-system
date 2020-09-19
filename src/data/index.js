@@ -1,0 +1,3 @@
+export {
+  getTowns
+} from "./towns";

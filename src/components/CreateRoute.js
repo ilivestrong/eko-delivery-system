@@ -4,8 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { AppSelect, RouteList } from "./common";
-import { getTowns } from "../data/towns";
 import { ACTION_CREATORS } from "../state/actions"
+import { TownContext } from "../common/contexts";
 
 const useStyles = makeStyles((theme) => ({
   "control-top-margin": {
@@ -15,12 +15,11 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateRoute = (props) => {
   const classes = useStyles();
-  const townsList = getTowns();
-
   const { createRoute, routes } = props;
   const [fromTown, setFromTown] = React.useState("");
   const [toTown, setToTown] = React.useState("");
   const [cost, setCost] = React.useState("");
+  const townList = React.useContext(TownContext);
 
   const handleTownSelection = (type, value) => {
     if (value && value !== "") {
@@ -58,7 +57,7 @@ const CreateRoute = (props) => {
       <div style={{ paddingTop: 15 }}>
         <AppSelect
           label="From"
-          items={townsList}
+          items={townList}
           onSelection={(value) => handleTownSelection("F", value)}
         />
 
@@ -66,7 +65,7 @@ const CreateRoute = (props) => {
 
         <AppSelect
           label="To"
-          items={townsList}
+          items={townList}
           onSelection={(value) => handleTownSelection("T", value)}
         />
 

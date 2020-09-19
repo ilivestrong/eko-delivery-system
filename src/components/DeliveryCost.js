@@ -1,12 +1,11 @@
 import React from "react";
-import { Typography, Button, TextField } from "@material-ui/core"
-import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from "@material-ui/core"
 import { RouteSelectionChips } from "./common";
-import { getTowns } from "../data/towns";
-
+import { TownContext } from "../common/contexts";
 
 const DeliveryCost = (props) => {
 
+  const townList = React.useContext(TownContext);
 
   const handleTownSelection = (town) => {
     /* 
@@ -28,7 +27,7 @@ const DeliveryCost = (props) => {
       </Typography>
 
       <RouteSelectionChips
-        townList={getTowns()}
+        townList={townList}
         onTownSelection={(town) => handleTownSelection(town)}
       />
     </React.Fragment>
