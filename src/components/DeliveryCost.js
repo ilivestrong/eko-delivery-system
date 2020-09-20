@@ -9,13 +9,15 @@ import {
   AppMessage,
   AppButton,
   AppIconButton,
+  AppDialog,
 } from "./common";
 import { TownContext } from "../common/contexts";
 import { connect } from "react-redux";
 import UndoIcon from '@material-ui/icons/Undo';
 import ClearIcon from '@material-ui/icons/Clear';
 
-const DeliveryCost = () => {
+const DeliveryCost = (props) => {
+  const { routes } = props;
   const townList = React.useContext(TownContext);
   const [selectedTownList, setSelectedTownList] = React.useState([]);
   const [isError, setIsError] = React.useState(false);
@@ -24,6 +26,14 @@ const DeliveryCost = () => {
   const [showCalculateButton, setShowCalculateButton] = React.useState(false);
   const [enableCalculateButton, setEnableCalculateButton] = React.useState(false);
   const [areAvailableActionButtons, setAreAvailableActionButtons] = React.useState(false);
+  const [showDeliveryCostDialog, setShowDeliveryCostDialog] = React.useState(false);
+  const [deliveryCostMessage, setDeliveryCostMessage] = React.useState("");
+
+
+  const handleHideDeliveryCostDialog = () => {
+    setShowDeliveryCostDialog(false);
+
+  }
 
   const handleTownSelection = ({ text }) => {
     if (selectedTownList.indexOf(text) > -1) {
@@ -36,12 +46,71 @@ const DeliveryCost = () => {
 
   const handleDeliverCostCalculation = () => {
 
+    const parseDeliveryRouteIntoNodes = () => {
+      let normalizedRoutes = [];
+      for (let step = 0; step <= selectedTownList.length - 1; step += 2) {
+        let slice = [...selectedTownList.slice(step, step + 2)];
+        normalizedRoutes.push(slice);
+      }
+      return normalizedRoutes;
+    }
+
+    if (routes.length === 0) {
+      setIsError(true);
+      setError(`
+      You have not defined routes definition yet.
+      Please click on Create Route link.
+      `);
+      return;
+    }
+
+    let sequencedRouteNodeList = [];
+    let routeNodeList = parseDeliveryRouteIntoNodes();
+
+    routeNodeList.forEach((route, index) => {
+      const [currFrom, currTo] = route;
+      if (index === 0) {
+        sequencedRouteNodeList.push(route)
+      } else {
+        if (currTo !== undefined) {
+          const nextFrom = routeNodeList[index - 1][1];
+          const nextTo = currFrom;
+          sequencedRouteNodeList.push([nextFrom, nextTo]);
+          sequencedRouteNodeList.push([currFrom, currTo]);
+        } else {
+          const nextFrom = routeNodeList[index - 1][1];
+          const nextTo = currFrom;
+          sequencedRouteNodeList.push([nextFrom, nextTo]);
+        }
+      }
+    })
+
+    let deliverycost = 0;
+    try {
+      deliverycost = sequencedRouteNodeList.reduce((totalCost, current) => {
+        const [from, to] = current;
+        const routeFound = routes.find((route) => route.from === from && route.to === to);
+        if (routeFound) {
+          totalCost += routeFound.cost;
+        } else {
+          throw new Error("Route not found.");
+        }
+        return totalCost;
+      }, 0);
+    } catch (e) { deliverycost = -1; }
+
+    if (deliverycost > -1) {
+      setDeliveryCostMessage(`Total Delivery cost : ${deliverycost}`);
+    } else {
+      setDeliveryCostMessage("No Such Route.")
+    }
+    setShowDeliveryCostDialog(true);
   }
 
   const handleResetOperation = (event) => {
     setSelectedTownList([]);
   }
-  const hanndleUndoLastOperation = () =>
+  const handleUndoLastOperation = () =>
     setSelectedTownList(selectedTownList.slice(0, selectedTownList.length - 1));
 
   React.useEffect(() => {
@@ -68,6 +137,7 @@ const DeliveryCost = () => {
   },
     // eslint-disable-next-line
     [selectedTownList]);
+
 
   return (
     <React.Fragment>
@@ -97,7 +167,7 @@ const DeliveryCost = () => {
           <AppIconButton
             title="Undo add town"
             style={{ marginLeft: 300 }}
-            onClick={hanndleUndoLastOperation}
+            onClick={handleUndoLastOperation}
           >
             <UndoIcon />
           </AppIconButton>
@@ -128,6 +198,14 @@ const DeliveryCost = () => {
       <Snackbar open={isError} autoHideDuration={4000} onClose={() => setIsError(false)}>
         <AppMessage style={{ fontSize: 25 }} severity="error">{error}</AppMessage>
       </Snackbar>
+
+      <AppDialog
+        show={showDeliveryCostDialog}
+        onOK={handleHideDeliveryCostDialog}
+        message={deliveryCostMessage}
+        title={`Route: ${selectedTownList.join(" -> ")}`}
+      />
+
     </React.Fragment>
   )
 }

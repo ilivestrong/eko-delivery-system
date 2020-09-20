@@ -36,7 +36,7 @@ const CreateRoute = (props) => {
     createRoute(
       fromTown,
       toTown,
-      cost,
+      Number(cost),
     );
 
     setCost("");

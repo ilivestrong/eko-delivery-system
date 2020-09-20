@@ -14,7 +14,7 @@ export const routesReducer = (state = initialState, action) => {
         {
           routes:
             [
-              ...state.routes, 
+              ...state.routes,
               action.payload,
             ]
         });

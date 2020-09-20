@@ -6,3 +6,4 @@ export { default as DeliveryRouteView } from "./DeliveryRouteView";
 export { default as AppMessage } from "./AppMessage";
 export { default as AppButton } from "./AppButton";
 export { default as AppIconButton } from "./AppIconButton";
+export { default as AppDialog } from "./AppDialog";
